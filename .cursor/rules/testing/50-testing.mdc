@@ -1,0 +1,10 @@
+---
+description: Testing standards
+alwaysApply: true
+---
+
+# Testing
+
+- Structure tests as Arrange → Act → Assert.
+- Mock HTTP calls with `HttpTestingController`.
+- Verify no extra requests: `httpMock.verify()`.

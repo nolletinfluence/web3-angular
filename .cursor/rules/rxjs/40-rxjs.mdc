@@ -1,0 +1,11 @@
+---
+description: RxJS usage patterns
+alwaysApply: true
+---
+
+# RxJS Rules
+
+- Use `switchMap` for request chains; `combineLatest` for parallel calls.
+- Cache read-only streams with `shareReplay(1)`.
+- Keep manual subscriptions minimal; prefer `async` pipe.
+- For manual subscriptions use `takeUntilDestroyed()` from `@angular/core/rxjs-interop`.

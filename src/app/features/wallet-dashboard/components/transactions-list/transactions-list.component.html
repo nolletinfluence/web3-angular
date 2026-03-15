@@ -1,0 +1,55 @@
+<section class="grid gap-4 rounded-xl border border-slate-800 bg-slate-900 p-4">
+  <header class="flex flex-col gap-1">
+    <h2 class="text-lg font-semibold text-slate-100">Последние транзакции</h2>
+    <span class="text-xs text-slate-400">10 последних операций</span>
+  </header>
+
+  <div class="overflow-x-auto rounded-lg border border-slate-800">
+    <table class="min-w-[640px] w-full border-collapse text-sm">
+      <thead class="bg-slate-950/70 text-xs uppercase tracking-wide text-slate-400">
+        <tr>
+          <th class="px-4 py-3 text-left">Хеш</th>
+          <th class="px-4 py-3 text-left">From</th>
+          <th class="px-4 py-3 text-left">To</th>
+          <th class="px-4 py-3 text-right">Сумма</th>
+          <th class="px-4 py-3 text-left">Дата</th>
+          <th class="px-4 py-3 text-left">Статус</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="transactions.length === 0">
+          <td colspan="6" class="px-4 py-4 text-center text-slate-400">
+            Транзакций пока нет.
+          </td>
+        </tr>
+        <tr *ngFor="let tx of transactions; trackBy: trackByHash">
+          <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
+            {{ shortenHash(tx.hash) }}
+          </td>
+          <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
+            {{ shortenAddress(tx.from) }}
+          </td>
+          <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
+            {{ shortenAddress(tx.to) }}
+          </td>
+          <td class="border-b border-slate-800 px-4 py-3 text-right text-slate-200">
+            {{ formatTransactionValue(tx.value) }} {{ tx.symbol }}
+          </td>
+          <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
+            {{ formatTimestamp(tx.timestamp) }}
+          </td>
+          <td class="border-b border-slate-800 px-4 py-3">
+            <span
+              class="inline-flex rounded-full px-2 py-1 text-xs"
+              [ngClass]="tx.status === 'success'
+                ? 'bg-emerald-950 text-emerald-300'
+                : 'bg-red-950 text-red-300'"
+            >
+              {{ statusLabel(tx.status) }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

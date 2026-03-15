@@ -1,0 +1,14 @@
+<div class="grid gap-2">
+  <label for="chain" class="text-sm text-slate-400">Сеть</label>
+  <select
+    id="chain"
+    [formControl]="control"
+    [disabled]="disabled"
+    class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60"
+  >
+    <option value="" disabled>Выберите сеть</option>
+    <option *ngFor="let chain of chains" [value]="chain.id">
+      {{ chain.name }} ({{ chain.nativeCurrency.symbol }})
+    </option>
+  </select>
+</div>

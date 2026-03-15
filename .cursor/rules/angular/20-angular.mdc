@@ -1,0 +1,16 @@
+---
+description: Angular patterns and best practices
+alwaysApply: true
+---
+
+# Angular Rules
+
+- Use standalone components/directives/pipes (Angular 17+).
+- Default to `ChangeDetectionStrategy.OnPush`.
+- Prefer DI via `inject()` when it reduces boilerplate.
+- Templates: use `async` pipe instead of manual subscriptions.
+- Always add `trackBy` for `ngFor` lists.
+- Use `NgOptimizedImage` for static images (no base64).
+- Use the `host` object instead of `@HostBinding/@HostListener`.
+- Prefer semantic HTML and proper ARIA attributes.
+- Use signals for local reactive state where appropriate.

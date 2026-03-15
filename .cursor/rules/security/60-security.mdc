@@ -1,0 +1,11 @@
+---
+description: Security and Web3 constraints
+alwaysApply: true
+---
+
+# Security
+
+- Never store private keys/seed phrases/signatures in code or logs.
+- Avoid `innerHTML`; rely on Angular's safe templates.
+- Validate `postMessage` origin explicitly.
+- Extension content scripts must never handle secrets.

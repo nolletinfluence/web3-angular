@@ -1,0 +1,17 @@
+---
+description: Core engineering principles and code style
+alwaysApply: true
+---
+
+# Core Principles
+
+- Architecture first; think in a 6+ month horizon.
+- Read existing code and patterns before changing anything.
+- Prefer immutability and pure functions where possible.
+- Use clear boolean names: `isActive`, `hasPermission`.
+- Prefer named exports; avoid default exports.
+- Avoid `any`; use `unknown` if the type is uncertain.
+- Define API payloads via `interface` or `type`.
+- Use optional chaining (`?.`) and nullish coalescing (`??`).
+- Use single quotes, 2-space indent, no trailing whitespace.
+- Use `const` by default; `let` only when necessary.

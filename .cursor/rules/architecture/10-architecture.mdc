@@ -1,0 +1,17 @@
+---
+description: Angular feature-based architecture
+alwaysApply: true
+---
+
+# Architecture (Angular Standalone + Feature-based)
+
+- `app/core/` — API client, config, utilities (each unit in its own folder).
+- `app/shared/` — reusable UI components and pipes (nested folders).
+- `app/features/` — product features; each component/service/model in its own folder.
+- `app/` — bootstrap only.
+
+```typescript
+// ✅ correct
+import { ApiClientService } from '@core/api/api-client/api-client.service';
+import { formatUsd } from '@core/utils/format/format.util';
+```

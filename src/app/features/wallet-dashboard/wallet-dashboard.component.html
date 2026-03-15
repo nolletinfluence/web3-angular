@@ -1,0 +1,91 @@
+<main class="mx-auto grid max-w-6xl gap-6 px-6 py-6">
+  <header class="space-y-2">
+    <div>
+      <h1 class="text-2xl font-semibold text-slate-100 md:text-3xl">
+        Multi-Chain Wallet Dashboard
+      </h1>
+      <p class="text-slate-300">
+        Просмотр балансов и транзакций в нескольких блокчейнах. Введите адрес и
+        выберите сеть.
+      </p>
+    </div>
+  </header>
+
+  <ng-container *ngIf="vm$ | async as vm">
+    <section class="grid gap-4">
+      <form
+        class="grid gap-4 rounded-xl border border-slate-800 bg-slate-900 p-4"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+      >
+        <app-chain-select
+          [chains]="vm.chainsState.chains"
+          [control]="form.controls.chainId"
+          [disabled]="vm.chainsState.status !== 'success' || vm.dashboardState.status === 'loading'"
+        ></app-chain-select>
+
+        <app-address-input
+          [control]="form.controls.address"
+          [disabled]="vm.chainsState.status !== 'success' || vm.dashboardState.status === 'loading'"
+        ></app-address-input>
+
+        <button
+          type="submit"
+          [disabled]="
+            vm.chainsState.status !== 'success' ||
+            vm.dashboardState.status === 'loading' ||
+            form.invalid
+          "
+          class="w-full rounded-lg bg-blue-500 px-4 py-3 font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        >
+          {{ vm.dashboardState.status === 'loading' ? 'Загрузка...' : 'Показать баланс' }}
+        </button>
+
+        <div
+          class="rounded-lg border border-red-800 bg-red-950 px-3 py-2 text-sm text-red-200"
+          *ngIf="vm.dashboardState.status === 'error'"
+        >
+          {{ vm.dashboardState.error }}
+        </div>
+        <div
+          class="rounded-lg border border-red-800 bg-red-950 px-3 py-2 text-sm text-red-200"
+          *ngIf="vm.chainsState.status === 'error'"
+        >
+          {{ vm.chainsState.error }}
+        </div>
+      </form>
+    </section>
+
+    <section class="grid gap-4">
+      <div
+        *ngIf="vm.dashboardState.status === 'idle'"
+        class="rounded-xl border border-dashed border-slate-800 bg-slate-900/50 p-6 text-slate-300"
+      >
+        <h3 class="mb-2 text-lg font-semibold text-slate-100">Введите адрес кошелька</h3>
+        <p>Мы покажем нативный баланс, токены и последние транзакции.</p>
+      </div>
+
+      <div
+        *ngIf="vm.dashboardState.status === 'loading'"
+        class="rounded-xl border border-dashed border-slate-800 bg-slate-900/50 p-6 text-slate-300"
+      >
+        <app-loader
+          message="Загружаем портфолио и транзакции..."
+          hint="Это может занять несколько секунд."
+        ></app-loader>
+      </div>
+
+      <div
+        *ngIf="vm.dashboardState.status === 'success'"
+        class="grid gap-4 lg:grid-cols-[1.3fr_1fr]"
+      >
+        <app-portfolio-table
+          [portfolio]="vm.dashboardState.portfolio"
+        ></app-portfolio-table>
+        <app-transactions-list
+          [transactions]="vm.dashboardState.transactions"
+        ></app-transactions-list>
+      </div>
+    </section>
+  </ng-container>
+</main>
