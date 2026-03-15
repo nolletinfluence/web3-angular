@@ -1,55 +1,112 @@
-<section class="grid gap-4 rounded-xl border border-slate-800 bg-slate-900 p-4">
-  <header class="flex flex-col gap-1">
-    <h2 class="text-lg font-semibold text-slate-100">Последние транзакции</h2>
-    <span class="text-xs text-slate-400">10 последних операций</span>
-  </header>
+<div class="rounded-3xl bg-gradient-to-br from-indigo-500/25 via-slate-900/10 to-blue-500/20 p-[1px] shadow-[0_20px_60px_rgba(15,23,42,0.55)]">
+  <section class="grid gap-4 rounded-3xl border border-slate-800/40 bg-slate-900/80 p-5 backdrop-blur-xl">
+    <header class="flex flex-col gap-1">
+      <h2 class="text-lg font-semibold text-slate-100">Последние транзакции</h2>
+      <span class="text-xs text-slate-400">10 последних операций</span>
+    </header>
 
-  <div class="overflow-x-auto rounded-lg border border-slate-800">
-    <table class="min-w-[640px] w-full border-collapse text-sm">
-      <thead class="bg-slate-950/70 text-xs uppercase tracking-wide text-slate-400">
-        <tr>
-          <th class="px-4 py-3 text-left">Хеш</th>
-          <th class="px-4 py-3 text-left">From</th>
-          <th class="px-4 py-3 text-left">To</th>
-          <th class="px-4 py-3 text-right">Сумма</th>
-          <th class="px-4 py-3 text-left">Дата</th>
-          <th class="px-4 py-3 text-left">Статус</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngIf="transactions.length === 0">
-          <td colspan="6" class="px-4 py-4 text-center text-slate-400">
-            Транзакций пока нет.
-          </td>
-        </tr>
-        <tr *ngFor="let tx of transactions; trackBy: trackByHash">
-          <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
-            {{ shortenHash(tx.hash) }}
-          </td>
-          <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
-            {{ shortenAddress(tx.from) }}
-          </td>
-          <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
-            {{ shortenAddress(tx.to) }}
-          </td>
-          <td class="border-b border-slate-800 px-4 py-3 text-right text-slate-200">
-            {{ formatTransactionValue(tx.value) }} {{ tx.symbol }}
-          </td>
-          <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
-            {{ formatTimestamp(tx.timestamp) }}
-          </td>
-          <td class="border-b border-slate-800 px-4 py-3">
-            <span
-              class="inline-flex rounded-full px-2 py-1 text-xs"
-              [ngClass]="tx.status === 'success'
-                ? 'bg-emerald-950 text-emerald-300'
-                : 'bg-red-950 text-red-300'"
-            >
-              {{ statusLabel(tx.status) }}
+    <div class="hidden overflow-x-auto rounded-2xl border border-slate-800/70 bg-slate-950/30 sm:block">
+      <table class="min-w-[640px] w-full border-collapse text-sm">
+        <thead class="bg-slate-950/70 text-xs uppercase tracking-wide text-slate-400">
+          <tr>
+            <th class="px-4 py-3 text-left">Хеш</th>
+            <th class="px-4 py-3 text-left">From</th>
+            <th class="px-4 py-3 text-left">To</th>
+            <th class="px-4 py-3 text-right">Сумма</th>
+            <th class="px-4 py-3 text-left">Дата</th>
+            <th class="px-4 py-3 text-left">Статус</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="transactions.length === 0">
+            <td colspan="6" class="px-4 py-4 text-center text-slate-400">
+              Транзакций пока нет.
+            </td>
+          </tr>
+          <tr
+            *ngFor="let tx of transactions; trackBy: trackByHash"
+            class="transition-colors hover:bg-slate-900/40"
+          >
+            <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
+              {{ shortenHash(tx.hash) }}
+            </td>
+            <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
+              {{ shortenAddress(tx.from) }}
+            </td>
+            <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
+              {{ shortenAddress(tx.to) }}
+            </td>
+            <td class="border-b border-slate-800 px-4 py-3 text-right text-slate-200">
+              {{ formatTransactionValue(tx.value) }} {{ tx.symbol }}
+            </td>
+            <td class="border-b border-slate-800 px-4 py-3 text-slate-200">
+              {{ formatTimestamp(tx.timestamp) }}
+            </td>
+            <td class="border-b border-slate-800 px-4 py-3">
+              <span
+                class="inline-flex rounded-full px-2 py-1 text-xs"
+                [ngClass]="tx.status === 'success'
+                  ? 'bg-emerald-950 text-emerald-300'
+                  : tx.status === 'failed'
+                    ? 'bg-red-950 text-red-300'
+                    : 'bg-slate-900 text-slate-300'"
+              >
+                {{ statusLabel(tx.status) }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid gap-3 sm:hidden">
+      <div
+        *ngIf="transactions.length === 0"
+        class="rounded-2xl border border-dashed border-slate-800 bg-slate-950/40 p-4 text-center text-sm text-slate-400"
+      >
+        Транзакций пока нет.
+      </div>
+      <article
+        *ngFor="let tx of transactions; trackBy: trackByHash"
+        class="grid gap-3 rounded-2xl border border-slate-800/70 bg-slate-950/60 p-4 shadow-[0_12px_24px_rgba(15,23,42,0.35)]"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <div class="grid gap-1">
+            <span class="text-xs uppercase tracking-widest text-slate-500">Хеш</span>
+            <span class="text-sm text-slate-100">{{ shortenHash(tx.hash) }}</span>
+          </div>
+          <span
+            class="inline-flex rounded-full px-2 py-1 text-xs"
+            [ngClass]="tx.status === 'success'
+              ? 'bg-emerald-950 text-emerald-300'
+              : tx.status === 'failed'
+                ? 'bg-red-950 text-red-300'
+                : 'bg-slate-900 text-slate-300'"
+          >
+            {{ statusLabel(tx.status) }}
+          </span>
+        </div>
+        <div class="grid gap-2 text-xs text-slate-300">
+          <div class="flex items-center justify-between gap-4">
+            <span class="text-slate-500">From</span>
+            <span class="text-right text-slate-100">{{ shortenAddress(tx.from) }}</span>
+          </div>
+          <div class="flex items-center justify-between gap-4">
+            <span class="text-slate-500">To</span>
+            <span class="text-right text-slate-100">{{ shortenAddress(tx.to) }}</span>
+          </div>
+          <div class="flex items-center justify-between gap-4">
+            <span class="text-slate-500">Сумма</span>
+            <span class="text-right text-slate-100">
+              {{ formatTransactionValue(tx.value) }} {{ tx.symbol }}
             </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+          </div>
+          <div class="flex items-center justify-between gap-4">
+            <span class="text-slate-500">Дата</span>
+            <span class="text-right text-slate-100">{{ formatTimestamp(tx.timestamp) }}</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>

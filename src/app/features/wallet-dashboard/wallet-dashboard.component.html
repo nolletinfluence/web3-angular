@@ -1,54 +1,109 @@
-<main class="mx-auto grid max-w-6xl gap-6 px-6 py-6">
-  <header class="space-y-2">
-    <div>
+<main class="relative mx-auto grid max-w-6xl gap-8 px-4 py-10 md:px-6 lg:px-8">
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute left-1/2 top-[-120px] h-[260px] w-[260px] -translate-x-1/2 rounded-full bg-blue-500/20 blur-[120px]"
+    ></div>
+    <div
+      class="absolute right-[-80px] top-[140px] h-[220px] w-[220px] rounded-full bg-indigo-400/10 blur-[120px]"
+    ></div>
+    <div
+      class="absolute left-[-80px] bottom-[80px] h-[200px] w-[200px] rounded-full bg-sky-400/10 blur-[120px]"
+    ></div>
+  </div>
+
+  <header
+    class="relative grid gap-4 overflow-hidden rounded-3xl border border-slate-800/50 bg-slate-900/70 p-6 shadow-[0_30px_90px_rgba(15,23,42,0.55)] backdrop-blur-xl before:pointer-events-none before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-br before:from-blue-500/10 before:via-transparent before:to-indigo-500/10 before:content-['']"
+  >
+    <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/50 to-transparent"></div>
+    <div class="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-blue-500/20 blur-3xl"></div>
+    <div class="absolute -left-10 bottom-[-70px] h-44 w-44 rounded-full bg-indigo-500/20 blur-3xl"></div>
+    <div class="relative z-10 space-y-3">
+      <p class="text-xs uppercase tracking-[0.3em] text-blue-200/70">
+        Multi-Chain Wallet
+      </p>
       <h1 class="text-2xl font-semibold text-slate-100 md:text-3xl">
-        Multi-Chain Wallet Dashboard
+        Dashboard балансов и транзакций
       </h1>
       <p class="text-slate-300">
-        Просмотр балансов и транзакций в нескольких блокчейнах. Введите адрес и
-        выберите сеть.
+        Просматривайте портфель, токены и последние операции в выбранной сети.
       </p>
+    </div>
+    <div class="relative z-10 flex flex-wrap gap-2 text-xs text-slate-400">
+      <span
+        class="inline-flex items-center gap-2 rounded-full border border-slate-700/60 bg-slate-950/70 px-3 py-1 shadow-[0_8px_18px_rgba(15,23,42,0.35)]"
+      >
+        <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+        Балансы и транзакции
+      </span>
+      <span
+        class="inline-flex items-center gap-2 rounded-full border border-slate-700/60 bg-slate-950/70 px-3 py-1 shadow-[0_8px_18px_rgba(15,23,42,0.35)]"
+      >
+        <span class="h-2 w-2 rounded-full bg-sky-400"></span>
+        Поддержка EVM и Solana
+      </span>
+      <span
+        class="inline-flex items-center gap-2 rounded-full border border-slate-700/60 bg-slate-950/70 px-3 py-1 shadow-[0_8px_18px_rgba(15,23,42,0.35)]"
+      >
+        <span class="h-2 w-2 rounded-full bg-indigo-400"></span>
+        Форматирование rawBalance
+      </span>
     </div>
   </header>
 
   <ng-container *ngIf="vm$ | async as vm">
     <section class="grid gap-4">
       <form
-        class="grid gap-4 rounded-xl border border-slate-800 bg-slate-900 p-4"
+        class="relative grid gap-5 overflow-hidden rounded-3xl border border-slate-800/60 bg-slate-900/80 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.5)] backdrop-blur-xl transition hover:border-slate-700/70 hover:shadow-[0_30px_90px_rgba(15,23,42,0.55)]"
         [formGroup]="form"
         (ngSubmit)="onSubmit()"
       >
-        <app-chain-select
-          [chains]="vm.chainsState.chains"
-          [control]="form.controls.chainId"
-          [disabled]="vm.chainsState.status !== 'success' || vm.dashboardState.status === 'loading'"
-        ></app-chain-select>
+        <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent"></div>
+        <div class="grid gap-4 lg:grid-cols-[1.1fr_1.9fr]">
+          <app-chain-select
+            [chains]="vm.chainsState.chains"
+            [control]="form.controls.chainId"
+            [disabled]="vm.chainsState.status !== 'success' || vm.dashboardState.status === 'loading'"
+          ></app-chain-select>
 
-        <app-address-input
-          [control]="form.controls.address"
-          [disabled]="vm.chainsState.status !== 'success' || vm.dashboardState.status === 'loading'"
-        ></app-address-input>
+          <app-address-input
+            [control]="form.controls.address"
+            [disabled]="vm.chainsState.status !== 'success' || vm.dashboardState.status === 'loading'"
+          ></app-address-input>
+        </div>
 
-        <button
-          type="submit"
-          [disabled]="
-            vm.chainsState.status !== 'success' ||
-            vm.dashboardState.status === 'loading' ||
-            form.invalid
-          "
-          class="w-full rounded-lg bg-blue-500 px-4 py-3 font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-        >
-          {{ vm.dashboardState.status === 'loading' ? 'Загрузка...' : 'Показать баланс' }}
-        </button>
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <button
+            type="submit"
+            [disabled]="
+              vm.chainsState.status !== 'success' ||
+              vm.dashboardState.status === 'loading' ||
+              form.invalid
+            "
+            class="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 px-6 py-3 font-semibold text-white shadow-[0_16px_40px_rgba(59,130,246,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_50px_rgba(59,130,246,0.4)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          >
+            <span
+              class="absolute inset-0 opacity-0 transition group-hover:opacity-100"
+              aria-hidden="true"
+            >
+              <span
+                class="absolute inset-0 bg-gradient-to-r from-white/10 via-white/0 to-white/10"
+              ></span>
+            </span>
+            {{ vm.dashboardState.status === 'loading' ? 'Загрузка...' : 'Показать баланс' }}
+          </button>
+          <p class="text-xs text-slate-400">
+            Адрес можно вводить вручную, без подключения кошелька.
+          </p>
+        </div>
 
         <div
-          class="rounded-lg border border-red-800 bg-red-950 px-3 py-2 text-sm text-red-200"
+          class="rounded-lg border border-red-800/80 bg-red-950/60 px-3 py-2 text-sm text-red-200"
           *ngIf="vm.dashboardState.status === 'error'"
         >
           {{ vm.dashboardState.error }}
         </div>
         <div
-          class="rounded-lg border border-red-800 bg-red-950 px-3 py-2 text-sm text-red-200"
+          class="rounded-lg border border-red-800/80 bg-red-950/60 px-3 py-2 text-sm text-red-200"
           *ngIf="vm.chainsState.status === 'error'"
         >
           {{ vm.chainsState.error }}
@@ -59,7 +114,7 @@
     <section class="grid gap-4">
       <div
         *ngIf="vm.dashboardState.status === 'idle'"
-        class="rounded-xl border border-dashed border-slate-800 bg-slate-900/50 p-6 text-slate-300"
+        class="rounded-2xl border border-dashed border-slate-800 bg-slate-900/40 p-6 text-slate-300"
       >
         <h3 class="mb-2 text-lg font-semibold text-slate-100">Введите адрес кошелька</h3>
         <p>Мы покажем нативный баланс, токены и последние транзакции.</p>
@@ -67,7 +122,7 @@
 
       <div
         *ngIf="vm.dashboardState.status === 'loading'"
-        class="rounded-xl border border-dashed border-slate-800 bg-slate-900/50 p-6 text-slate-300"
+        class="rounded-2xl border border-dashed border-slate-800 bg-slate-900/50 p-6 text-slate-300"
       >
         <app-loader
           message="Загружаем портфолио и транзакции..."

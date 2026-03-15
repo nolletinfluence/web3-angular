@@ -1,14 +1,30 @@
 <div class="grid gap-2">
   <label for="chain" class="text-sm text-slate-400">Сеть</label>
-  <select
-    id="chain"
-    [formControl]="control"
-    [disabled]="disabled"
-    class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60"
-  >
-    <option value="" disabled>Выберите сеть</option>
-    <option *ngFor="let chain of chains" [value]="chain.id">
-      {{ chain.name }} ({{ chain.nativeCurrency.symbol }})
-    </option>
-  </select>
+  <div class="relative">
+    <select
+      id="chain"
+      [formControl]="control"
+      [disabled]="disabled"
+      class="w-full appearance-none rounded-xl border border-slate-800/80 bg-slate-950/70 px-3 py-3 pr-10 text-sm text-slate-100 shadow-[0_10px_24px_rgba(15,23,42,0.35)] transition focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 hover:border-slate-600/70 disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      <option value="" disabled>Выберите сеть</option>
+      <option *ngFor="let chain of chains" [value]="chain.id">
+        {{ chain.name }} ({{ chain.nativeCurrency.symbol }})
+      </option>
+    </select>
+    <span
+      class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+      aria-hidden="true"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M7 10l5 5 5-5"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
+  </div>
 </div>

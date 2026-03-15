@@ -25,7 +25,7 @@ export class TransactionsListComponent {
   readonly shortenAddress = shortenAddress;
 
   trackByHash(index: number, tx: Transaction): string {
-    return tx.hash ?? `${index}`;
+    return tx.hash ? tx.hash : `${index}`;
   }
 
   statusLabel(status: string): string {
@@ -35,6 +35,10 @@ export class TransactionsListComponent {
 
     if (status === "failed") {
       return "Ошибка";
+    }
+
+    if (!status || status === "unknown") {
+      return "Неизвестно";
     }
 
     return status;
